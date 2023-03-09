@@ -164,6 +164,11 @@ public:
         std::cout << "Name: ";
         std::getline(std::cin >> std::ws, name);
 
+        // Convert to Uppercase
+        for (int i = 0; i < name.length(); i++) {
+			name[i] = toupper(name[i]);
+		}
+
         return name;
     }
     std::string getBirthday() {
@@ -177,6 +182,11 @@ public:
         std::string address;
         std::cout << "Address: ";
         std::getline(std::cin >> std::ws, address);
+
+        // Convert to Uppercase
+        for (int i = 0; i < address.length(); i++) {
+            address[i] = toupper(address[i]);
+        }
 
         return address;
     }
@@ -244,6 +254,18 @@ public:
         std::cout << "3. Nadine C. Younes" << std::endl;
         std::cout << "4. Maria Teresa M. Castillo" << std::endl;
     }
+
+    void displayLoading() {
+        int numberOfDots = 3;
+        double timeInterval;
+        std::cout << std::endl << "Loading ";
+        for (numberOfDots; numberOfDots >= 0; numberOfDots--) {
+            {
+                std::cout << ".";
+                for (timeInterval = 0; timeInterval <= 100000000; timeInterval++);
+            }
+        }
+    }
 };
 
 int main()
@@ -258,6 +280,7 @@ int main()
         menu.displayMenu(); //Display menu
         choice = menu.getChoice(); //Get user's choice
 
+        menu.displayLoading();
 
         switch (choice) {
         case (1): {
@@ -277,11 +300,15 @@ int main()
             student.setGender(studentChoiceHandler.getGenderChoice());
             if (student.getGender() == "INVALID") { //If the gender is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
+
+                menu.displayLoading();
                 break;
             }
             student.setStudentID(studentInfoHandler.getStudentID());
             if (student.getStudentID() == -1) { //If the student ID is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
+
+                menu.displayLoading();
                 break;
             }
             std::cout << "Degree Program:" << std::endl;
@@ -289,6 +316,8 @@ int main()
             student.setDegreeProgram(studentChoiceHandler.getDegreeProgramChoice());
             if (student.getDegreeProgram() == "INVALID") { //If the degree program is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
+
+                menu.displayLoading();
                 break;
             }
             std::cout << "Year Level:" << std::endl;
@@ -296,6 +325,8 @@ int main()
             student.setYearLevel(studentChoiceHandler.getYearLevelChoice());
             if (student.getYearLevel() == "INVALID") { //If the year level is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
+
+                menu.displayLoading();
                 break;
             }
 
@@ -306,6 +337,7 @@ int main()
                 std::cout << "\n\nRecord already exists!" << std::endl;
             }
 
+            menu.displayLoading();
             break;
         }
         case (2): {
@@ -330,9 +362,11 @@ int main()
             student.setStudentID(studentInfoHandler.getStudentID());
             if (studentRecordManager.deleteRecord(student.getStudentID())) {
                 std::cout << "\n\nRecord deleted successfully!" << std::endl;
+                menu.displayLoading();
             }
             else {
                 std::cout << "\n\nRecord not found!" << std::endl;
+                menu.displayLoading();
             }
             break;
         }
