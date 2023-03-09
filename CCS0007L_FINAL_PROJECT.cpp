@@ -192,11 +192,10 @@ public:
     }
     int getStudentID() {
         int student_id;
-        std::cout << "Student ID: ";
+        std::cout << "Student ID (XXXXXXXXX): ";
         std::cin >> student_id;
 
         if (student_id < 100000000 || student_id > 999999999) { //Checks if the student ID is valid; 9 digits
-            std::cout << "Invalid Student ID" << std::endl;
             return -1;
         }
 
@@ -365,7 +364,7 @@ int main()
                 menu.displayLoading();
             }
             else {
-                std::cout << "\n\nRecord not found!" << std::endl;
+                std::cout << "\n\nRecord not found or invalid student ID!" << std::endl;
                 menu.displayLoading();
             }
             break;
@@ -381,8 +380,6 @@ int main()
 }
 
 bool StudentRecordManager::addRecord(Student student) {
-    system("CLS");
-    
     //Check if student ID is already in the list
     mCurr = mHead;
     while (mCurr != nullptr) {
