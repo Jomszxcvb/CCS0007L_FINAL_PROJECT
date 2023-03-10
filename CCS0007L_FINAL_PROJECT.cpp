@@ -20,14 +20,14 @@ public:
     Student(std::string name, std::string birthday, std::string address, std::string gender, int student_id, std::string degree_program, std::string year_level)
         : mName(name), mBirthday(birthday), mAddress(address), mGender(gender), mStudent_ID(student_id), mDegree_program(degree_program), mYear_level(year_level) {}
     Student(Student& student) {
-		mName = student.getName();
-		mBirthday = student.getBirthday();
-		mAddress = student.getAddress();
-		mGender = student.getGender();
-		mStudent_ID = student.getStudentID();
-		mDegree_program = student.getDegreeProgram();
-		mYear_level = student.getYearLevel();
-	}
+        mName = student.getName();
+        mBirthday = student.getBirthday();
+        mAddress = student.getAddress();
+        mGender = student.getGender();
+        mStudent_ID = student.getStudentID();
+        mDegree_program = student.getDegreeProgram();
+        mYear_level = student.getYearLevel();
+    }
 
     std::string getName() {
         return mName;
@@ -36,8 +36,8 @@ public:
         return mBirthday;
     }
     std::string getAddress() {
-		return mAddress;
-	}
+        return mAddress;
+    }
     std::string getGender() {
         return mGender;
     }
@@ -53,13 +53,13 @@ public:
 
     void setName(std::string name) {
         mName = name;
-	}
+    }
     void setBirthday(std::string birthday) {
         mBirthday = birthday;
     }
     void setAddress(std::string address) {
-		mAddress = address;
-	}
+        mAddress = address;
+    }
     void setGender(std::string gender) {
         mGender = gender;
     }
@@ -77,9 +77,9 @@ public:
 class StudentChoiceHandler { //Class of functions that handles the information of the student; involving choices
 public:
     void displayGenderChoices() {
-    std::cout << "> Gender:" << std::endl;
-    std::cout << "  [1] MALE" << std::endl;
-    std::cout << "  [2] FEMALE" << std::endl;
+        std::cout << "> Gender:" << std::endl;
+        std::cout << "  [1] MALE" << std::endl;
+        std::cout << "  [2] FEMALE" << std::endl;
     }
     void displayDegreeProgramChoices() {
         std::cout << "> Degree Program:" << std::endl;
@@ -170,8 +170,8 @@ public:
 
         // Convert to Uppercase
         for (int i = 0; i < name.length(); i++) {
-			name[i] = toupper(name[i]);
-		}
+            name[i] = toupper(name[i]);
+        }
 
         return name;
     }
@@ -222,10 +222,11 @@ private:
 
 public:
     bool addRecord(Student student);
-    Student* searchRecord();
+    Student* searchRecord(std::string name);
+    Student* searchRecord(int student_ID);
     void displayAllRecords();
     Student* displaySpecificRecord();
-    bool deleteRecord(int temp_student_ID);
+    bool deleteRecord(int student_ID);
 
     void storeAllStudentInfoToFile();
     void readAllStudentInfoFromFile();
@@ -235,44 +236,48 @@ public:
 
 class Menu {
 public:
+    /**
+     * @brief This function displays the main menu of the program.
+     * Sample:
+     *  ==========================================================
+     *  | WELCOME TO GROUP JOLLIBEE'S STUDENT INFORMATION SYSTEM |
+     *  ==========================================================
+     *  | What do you want to do?                                |
+     *  |                                                        |
+     *  | [1] Add New Record                                     |
+     *  | [2] Display All Records                                |
+     *  | [3] Display Specific Record                            |
+     *  | [4] Delete Record                                      |
+     *  | [5] Save & Exit                                        |
+     *  ==========================================================
+     */
     void displayMenu() {
-        // Display Menu
-        // Sample
-        // ==========================================================
-        // | WELCOME TO GROUP JOLLIBEE'S STUDENT INFORMATION SYSTEM |
-        // ==========================================================
-        // | What do you want to do?                                |   
-        // |                                                        |
-        // | [1] Add New Record                                     |
-        // | [2] Search Record                                      |
-        // | [3] Display All Records                                |
-        // | [4] Display Specific Record                            |
-        // | [5] Delete Record                                      |
-        // | [6] Save & Exit                                        |
-        // ----------------------------------------------------------
-
         std::cout << "==========================================================" << std::endl;
         std::cout << "| WELCOME TO GROUP JOLLIBEE'S STUDENT INFORMATION SYSTEM |" << std::endl;
         std::cout << "==========================================================" << std::endl;
         std::cout << "| What do you want to do?                                |" << std::endl;
         std::cout << "|                                                        |" << std::endl;
         std::cout << "| [1] Add New Record                                     |" << std::endl;
-        std::cout << "| [2] Search Record                                      |" << std::endl;
-        std::cout << "| [3] Display All Records                                |" << std::endl;
-        std::cout << "| [4] Display Specific Record                            |" << std::endl;
-        std::cout << "| [5] Delete Record                                      |" << std::endl;
-        std::cout << "| [6] Save & Exit                                        |" << std::endl;
-        std::cout << "----------------------------------------------------------" << std::endl;
+        std::cout << "| [2] Display All Records                                |" << std::endl;
+        std::cout << "| [3] Display Specific Record                            |" << std::endl;
+        std::cout << "| [4] Delete Record                                      |" << std::endl;
+        std::cout << "| [5] Save & Exit                                        |" << std::endl;
+        std::cout << "==========================================================" << std::endl;
     }
-
+    /**
+     * @brief This function gets the choice of the user
+     * @return The choice of the user
+     */
     int getChoice() {
-		int choice;
+        int choice;
         std::cout << std::endl;
-		std::cout << "Please type your selection: ";
+        std::cout << "Please type your selection: ";
         std::cin >> choice;
         return choice;
-	}
-
+    }
+    /**
+     * @brief This function displays the exit message of the program and the creators of the program
+     */
     void displayExit() {
         std::cout << "\nThank you for using our system!" << std::endl;
         std::cout << "\nGroup Members:" << std::endl;
@@ -281,7 +286,9 @@ public:
         std::cout << "3. Nadine C. Younes" << std::endl;
         std::cout << "4. Maria Teresa M. Castillo" << std::endl;
     }
-
+    /**
+     * @brief This function displays a loading animation
+     */
     void displayLoading() {
         int numberOfDots = 3;
         double timeInterval;
@@ -294,6 +301,9 @@ public:
         }
     }
 
+    /**
+     * @brief This function pauses the program until the user presses any key
+     */
     void pause() {
         std::cout << std::endl;
         std::cout << "Press any key to continue..." << std::endl;
@@ -382,31 +392,27 @@ int main()
             break;
         }
         case (2): {
-            studentRecordManager.searchRecord();
-            break;
-        }
-        case (3): {
             system("CLS");
             StudentInfoHandler studentInfoHandler;
 
             Student student;
 
             std::cout << "=======================" << std::endl;
-            std::cout << "| ALL STUDENT RECORDS |\n" << std::endl;
+            std::cout << "| ALL STUDENT RECORDS |" << std::endl;
             std::cout << "=======================" << std::endl;
             std::cout << std::endl;
 
-			studentRecordManager.displayAllRecords();
+            studentRecordManager.displayAllRecords();
 
-			menu.pause();
-			menu.displayLoading();
-			break;
+            menu.pause();
+            menu.displayLoading();
+            break;
+        }
+        case (3): {
+            studentRecordManager.displaySpecificRecord();
+            break;
         }
         case (4): {
-			studentRecordManager.displaySpecificRecord();
-			break;
-        }
-        case (5): {
             system("CLS");
             StudentInfoHandler studentInfoHandler;
 
@@ -434,30 +440,33 @@ int main()
             }
             break;
         }
-        case (6): {
+        case (5): {
             system("CLS");
             studentRecordManager.storeAllStudentInfoToFile();
             studentRecordManager.unloadAllStudent();
-			menu.displayExit();
-			break;
+            menu.displayExit();
+            break;
         }
         }
-    } while (choice != 6);
-
+    } while (choice != 5);
     return 0;
 }
 
+
+/**
+* @brief This function is used to add a student to the record manager.
+* @param student - Student to add to record manager.
+* @return True if successful false otherwise. This function is used to add a student to the record manager
+*/
 bool StudentRecordManager::addRecord(Student student) {
-    //Check if student ID is already in the list
-    mCurr = mHead;
-    while (mCurr != nullptr) {
+    // If student ID is already in the record
+    for (mCurr = mHead; mCurr != nullptr; mCurr = mCurr->mNext) {
         if (mCurr->mStudent->getStudentID() == student.getStudentID()) {
             return false;
         }
-        mCurr = mCurr->mNext;
     }
 
-    //If the list is empty
+    // If the the student record is empty
     if (mHead == nullptr) {
         mHead = new StudentRecordManager();
         mHead->mStudent = new Student(student);
@@ -465,176 +474,87 @@ bool StudentRecordManager::addRecord(Student student) {
         return true;
     }
 
-    //If the list is not empty
-    mCurr = mHead;
-    while (mCurr->mNext != nullptr) {
-		mCurr = mCurr->mNext;
-	}
+    // If the student record is not empty
+    for (mCurr = mHead; mCurr->mNext != nullptr; mCurr = mCurr->mNext) {}
 
-    mTail = mCurr->mNext;
     mTail = new StudentRecordManager();
     mTail->mPrev = mCurr;
+    mCurr->mNext = mTail;
     mTail->mStudent = new Student(student);
     mStudentSize++;
 
     return true;
 }
 
-Student* StudentRecordManager::searchRecord() { // The same with displaySpecificRecord(); To clarify
-    /*
-     * ToDo: Add search student record by name
-     * If Student record is not found return nullptr
-     */
-    int choice;
+/**
+* @brief This function is used to search for a student record by name.
+* @param name - Name of student to search for.
+* @return Student found if found, nullptr otherwise.
+*/
+Student* StudentRecordManager::searchRecord(std::string name) {
+    mCurr = mHead;
+    while (mCurr != mTail) {
 
-    do {
-        system("CLS");
-
-        std::cout << "SEARCH STUDENT RECORD" << std::endl;
-        std::cout << "\nHow do you want to search?" << std::endl;
-        std::cout << "1. Search by name" << std::endl;
-        std::cout << "2. Search by student ID" << std::endl;
-        std::cout << "3. Go Back" << std::endl;
-        std::cout << "\nPlease type your selection: ";
-
-        std::cin >> choice;
-
-        switch (choice) {
-        case 1: {// Search by name
-            std::string temp_name;
-            std::cout << "\nEnter Student's name: ";
-            std::cin >> temp_name;
-
-            mCurr = mHead;
-            while (mCurr != nullptr) {
-                if (mCurr->mStudent->getName() == temp_name) {
-                    return mCurr->mStudent;
-                }
-                mCurr = mCurr->mNext;
-            }
-            std::cout << "\nStudent not found!" << std::endl;
-            break;
+        if (mCurr->mStudent->getName() == name) {
+            return mCurr->mStudent;
         }
-        case 2: { // Search by student ID
-            int temp_student_ID;
-            std::cout << "\nEnter the Student ID: ";
-            std::cin >> temp_student_ID;
-
-            mCurr = mHead;
-            while (mCurr != nullptr) {
-                if (mCurr->mStudent->getStudentID() == temp_student_ID) {
-                    return mCurr->mStudent;
-                }
-                mCurr = mCurr->mNext;
-            }
-            std::cout << "\nStudent not found!" << std::endl;
-            break;
-        }
-        case 3: { // Go Back
-            std::cout << "Going Back...";
-            break;
-        }
-        default:
-            // Invalid input
-            break;
-        }
-    } while (!(choice == 1 || choice == 2 || choice == 3));
-
+        mCurr = mCurr->mNext;
+    }
     return nullptr;
 }
 
+
+/**
+* @brief This function is used to search for a student record by student ID.
+* @param student_ID - The Student ID to search for.
+* @return The pointer to the student if found, nullptr otherwise.
+*/
+Student* StudentRecordManager::searchRecord(int student_ID) {
+    mCurr = mHead;
+    while (mCurr != mTail) {
+
+        if (mCurr->mStudent->getStudentID() == student_ID) {
+            return mCurr->mStudent;
+        }
+        mCurr = mCurr->mNext;
+    }
+    return nullptr;
+}
+
+/**
+ * @brief This function is used to display all student records.
+ * Sample:
+ *     > If there is a record with student ID 201900001 and name John Doe, it will display:
+ *          [1]   201900001 : John Doe
+ *          [2]   201900002 : Jane Doe...
+ *     > If there is no record, it will display:
+ *          No records found!
+ */
 void StudentRecordManager::displayAllRecords() {
     mCurr = mHead;
     if (mCurr == nullptr) {
         std::cout << "No records found!" << std::endl;;
     }
 
-    int count = 1;
-    while (mCurr != nullptr) {
-        // Display record in "student number : name" format
+    for (int count = 1; mCurr != nullptr; count++) {
         std::cout << "[" << count++ << "]   " << mCurr->mStudent->getStudentID() << " : " << mCurr->mStudent->getName() << std::endl;
-        mCurr = mCurr->mNext;
     }
+
     return;
 }
 
-Student* StudentRecordManager::displaySpecificRecord() { // The same with searchRecord(); To clarify
-    /*
-     *ToDo: Add search student record by name
-     * If Student record is not found return nullptr
-     */
+Student* StudentRecordManager::displaySpecificRecord() {
     int choice;
 
-    do {
-        system("CLS");
-        std::cout << "SEARCH STUDENT RECORD" << std::endl;
-        std::cout << "\nHow do you want to search?" << std::endl;
-        std::cout << "1. Search by name" << std::endl;
-        std::cout << "2. Search by student ID" << std::endl;
-        std::cout << "3. Go Back" << std::endl;
-        std::cout << "\nPlease type your selection: ";
-
-        std::cin >> choice;
-
-        switch (choice) {
-        case 1: {// Search by name
-            std::string temp_name;
-            std::cout << "\nEnter Student's name: ";
-            std::cin >> temp_name;
-
-            mCurr = mHead;
-            while (mCurr != nullptr) {
-                if (mCurr->mStudent->getName() == temp_name) {
-                    std::cout << "\nStudent Name: " << mCurr->mStudent->getName() << std::endl;
-                    std::cout << "> Birthday: " << mCurr->mStudent->getBirthday() << std::endl;
-                    std::cout << "> Address: " << mCurr->mStudent->getAddress() << std::endl;
-                    std::cout << "> Gender: " << mCurr->mStudent->getGender() << std::endl;
-                    std::cout << "> Student ID: " << mCurr->mStudent->getStudentID() << std::endl;
-                    std::cout << "> Degree Program: " << mCurr->mStudent->getDegreeProgram() << std::endl;
-                    std::cout << "> Year Level: " << mCurr->mStudent->getYearLevel() << std::endl;
-                    return mCurr->mStudent;
-                }
-                mCurr = mCurr->mNext;
-            }
-            std::cout << "\nStudent not found!" << std::endl;
-            break;
-        }
-        case 2: { // Search by student ID
-            int temp_student_ID;
-            std::cout << "\nEnter the Student ID: ";
-            std::cin >> temp_student_ID;
-
-            mCurr = mHead;
-            while (mCurr != nullptr) {
-                if (mCurr->mStudent->getStudentID() == temp_student_ID) {
-                    std::cout << "\nStudent ID: " << mCurr->mStudent->getStudentID() << std::endl;
-                    std::cout << "> Name: " << mCurr->mStudent->getName() << std::endl;
-                    std::cout << "> Birthday: " << mCurr->mStudent->getBirthday() << std::endl;
-                    std::cout << "> Address: " << mCurr->mStudent->getAddress() << std::endl;
-                    std::cout << "> Gender: " << mCurr->mStudent->getGender() << std::endl;
-                    std::cout << "> Degree Program: " << mCurr->mStudent->getDegreeProgram() << std::endl;
-                    std::cout << "> Year Level: " << mCurr->mStudent->getYearLevel() << std::endl;
-                    return mCurr->mStudent;
-                }
-                mCurr = mCurr->mNext;
-            }
-            std::cout << "\nStudent not found!" << std::endl;
-            break;
-        }
-        case 3: { // Go Back
-            std::cout << "Going Back...";
-            break;
-        }
-        default:
-            // Invalid input
-            break;
-        }
-    } while (!(choice == 1 || choice == 2 || choice == 3));
 
     return nullptr;
 }
 
-// Delete a student record
+/**
+ * @brief This function is used to delete a student record by student ID.
+ * @param student_ID - The student ID of the student record to be deleted.
+ * @return true if the record is deleted successfully; else, false.
+ */
 bool StudentRecordManager::deleteRecord(int student_ID) {
     mCurr = mHead;
     while (mCurr != nullptr) {
@@ -653,37 +573,39 @@ bool StudentRecordManager::deleteRecord(int student_ID) {
                 return true;
             }
             else if (mCurr == mTail) {
-				mTail = mCurr->mPrev;
+                mTail = mCurr->mPrev;
                 if (mTail != nullptr) {
-					mTail->mNext = nullptr;
-				}
+                    mTail->mNext = nullptr;
+                }
 
-				delete mCurr->mStudent;
-				delete mCurr;
+                delete mCurr->mStudent;
+                delete mCurr;
 
-				mStudentSize--;
+                mStudentSize--;
 
-				return true;
-			}
+                return true;
+            }
             else {
                 mCurr->mPrev->mNext = mCurr->mNext;
-				mCurr->mNext->mPrev = mCurr->mPrev;
+                mCurr->mNext->mPrev = mCurr->mPrev;
 
-				delete mCurr->mStudent;
-				delete mCurr;
+                delete mCurr->mStudent;
+                delete mCurr;
 
-				mStudentSize--;
+                mStudentSize--;
 
-				return true;
+                return true;
             }
-                
+
         }
         mCurr = mCurr->mNext;
     }
-	return false;
+    return false;
 }
 
-// Add function to read all student info from file
+/**
+ * @brief This function is used to read all student information from a text file.
+ */
 void StudentRecordManager::readAllStudentInfoFromFile() {
     std::ifstream file(mTxtFile);
 
@@ -722,12 +644,17 @@ void StudentRecordManager::readAllStudentInfoFromFile() {
     file.close();
 }
 
-// Add function to store all student info in file
+/**
+ * @brief This function is used to store all student information to a text file.
+ */
 void StudentRecordManager::storeAllStudentInfoToFile() {
-    std::ofstream file(mTxtFile, std::ios::app);
+    std::ofstream file(mTxtFile);
 
-    mCurr = mHead;
-    while (mCurr != nullptr) {
+    if (mHead == nullptr) {
+        return;
+    }
+
+    for (mCurr = mHead; mCurr != nullptr; mCurr = mCurr->mNext) {
         file << mCurr->mStudent->getName() << std::endl;
         file << mCurr->mStudent->getStudentID() << std::endl;
         file << mCurr->mStudent->getGender() << std::endl;
@@ -735,20 +662,17 @@ void StudentRecordManager::storeAllStudentInfoToFile() {
         file << mCurr->mStudent->getAddress() << std::endl;
         file << mCurr->mStudent->getDegreeProgram() << std::endl;
         file << mCurr->mStudent->getYearLevel() << std::endl;
-
-        mCurr = mCurr->mNext;
     }
 
     file.close();
 }
 
-// Unload All Student
+/**
+ * @brief This function is used to unload all student records.
+ */
 void StudentRecordManager::unloadAllStudent() {
-	mCurr = mHead;
-    while (mCurr != nullptr) {
-		mHead = mCurr->mNext;
-		delete mCurr->mStudent;
-		delete mCurr;
-		mCurr = mHead;
-	}
+    for (mCurr = mHead; mCurr != nullptr; mCurr = mCurr->mNext) {
+        delete mCurr->mStudent;
+        delete mCurr;
+    }
 }
