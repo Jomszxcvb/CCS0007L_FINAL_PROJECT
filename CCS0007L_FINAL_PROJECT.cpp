@@ -227,69 +227,9 @@ public:
     Student* displaySpecificRecord();
     bool deleteRecord(int temp_student_ID);
 
-    // Function to store All student information in the text file
-    bool storeAllStudentInfoInFile() {
-        std::ofstream file(mTxtFile, std::ios::app);
-
-        curr = head;
-        while (curr != tail) {
-            file << curr->student.getName() << std::endl;
-            file << curr->student.getStudentID() << std::endl;
-            file << curr->student.getGender() << std::endl;
-            file << curr->student.getBirthday() << std::endl;
-            file << curr->student.getAddress() << std::endl;
-            file << curr->student.getDegreeProgram() << std::endl;
-            file << curr->student.getYearLevel() << std::endl;
-
-            curr = curr->next;
-        }
-
-        file.close();
-    }
-
-    // Function to read student information from the text file
-    bool readAllStudentInfoFromFile() {
-        std::ifstream file(mTxtFile);
-
-        if (file.is_open()) {
-            std::string line;
-            int counter = 0;
-
-            while (std::getline(file, line)) {
-                if (counter == 0) {
-                    mStudent = new Student;
-                    mStudent->setName(line);
-                }
-                else if (counter == 1) {
-                    mStudent->setStudentID(std::stoi(line));
-                }
-                else if (counter == 2) {
-                    mStudent->setGender(line);
-                }
-                else if (counter == 3) {
-                    mStudent->setBirthday(line);
-                }
-                else if (counter == 4) {
-                    mStudent->setAddress(line);
-                }
-                else if (counter == 5) {
-                    mStudent->setDegreeProgram(line);
-                }
-                else if (counter == 6) {
-                    mStudent->setYearLevel(line);
-                    addRecord(*mStudent);
-                    counter = -1;
-                }
-                counter++;
-            }
-        }
-        else {
-            return false;
-        }
-
-        file.close();
-        return true;
-    }  
+    void storeAllStudentInfoToFile();
+    void readAllStudentInfoFromFile();
+    void unloadAllStudent();
 
 };
 
@@ -308,7 +248,7 @@ public:
         // | [3] Display All Records                                |
         // | [4] Display Specific Record                            |
         // | [5] Delete Record                                      |
-        // | [6] Exit                                               |
+        // | [6] Save & Exit                                        |
         // ----------------------------------------------------------
 
         std::cout << "==========================================================" << std::endl;
@@ -321,7 +261,7 @@ public:
         std::cout << "| [3] Display All Records                                |" << std::endl;
         std::cout << "| [4] Display Specific Record                            |" << std::endl;
         std::cout << "| [5] Delete Record                                      |" << std::endl;
-        std::cout << "| [6] Exit                                               |" << std::endl;
+        std::cout << "| [6] Save & Exit                                        |" << std::endl;
         std::cout << "----------------------------------------------------------" << std::endl;
     }
 
@@ -364,6 +304,7 @@ public:
 int main()
 {
     StudentRecordManager studentRecordManager;
+    studentRecordManager.readAllStudentInfoFromFile();
 
     Menu menu;
     int choice;
@@ -494,6 +435,9 @@ int main()
             break;
         }
         case (6): {
+            system("CLS");
+            studentRecordManager.storeAllStudentInfoToFile();
+            studentRecordManager.unloadAllStudent();
 			menu.displayExit();
 			break;
         }
@@ -690,6 +634,7 @@ Student* StudentRecordManager::displaySpecificRecord() { // The same with search
     return nullptr;
 }
 
+// Delete a student record
 bool StudentRecordManager::deleteRecord(int student_ID) {
     mCurr = mHead;
     while (mCurr != nullptr) {
@@ -738,3 +683,72 @@ bool StudentRecordManager::deleteRecord(int student_ID) {
 	return false;
 }
 
+// Add function to read all student info from file
+void StudentRecordManager::readAllStudentInfoFromFile() {
+    std::ifstream file(mTxtFile);
+
+    file.is_open();
+    std::string line;
+    int counter = 0;
+
+    Student student;
+    while (std::getline(file, line)) {
+        if (counter == 0) {
+            student.setName(line);
+        }
+        else if (counter == 1) {
+            student.setStudentID(std::stoi(line));
+        }
+        else if (counter == 2) {
+            student.setGender(line);
+        }
+        else if (counter == 3) {
+            student.setBirthday(line);
+        }
+        else if (counter == 4) {
+            student.setAddress(line);
+        }
+        else if (counter == 5) {
+            student.setDegreeProgram(line);
+        }
+        else if (counter == 6) {
+            student.setYearLevel(line);
+            addRecord(student);
+            counter = -1;
+        }
+        counter++;
+    }
+
+    file.close();
+}
+
+// Add function to store all student info in file
+void StudentRecordManager::storeAllStudentInfoToFile() {
+    std::ofstream file(mTxtFile, std::ios::app);
+
+    mCurr = mHead;
+    while (mCurr != nullptr) {
+        file << mCurr->mStudent->getName() << std::endl;
+        file << mCurr->mStudent->getStudentID() << std::endl;
+        file << mCurr->mStudent->getGender() << std::endl;
+        file << mCurr->mStudent->getBirthday() << std::endl;
+        file << mCurr->mStudent->getAddress() << std::endl;
+        file << mCurr->mStudent->getDegreeProgram() << std::endl;
+        file << mCurr->mStudent->getYearLevel() << std::endl;
+
+        mCurr = mCurr->mNext;
+    }
+
+    file.close();
+}
+
+// Unload All Student
+void StudentRecordManager::unloadAllStudent() {
+	mCurr = mHead;
+    while (mCurr != nullptr) {
+		mHead = mCurr->mNext;
+		delete mCurr->mStudent;
+		delete mCurr;
+		mCurr = mHead;
+	}
+}
