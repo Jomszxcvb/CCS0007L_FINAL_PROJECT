@@ -5,7 +5,8 @@
 #include <string>
 #include <iostream>
 
-class Student { //Class of the student's information
+// Class of functions that handles the information of individual student
+class Student {
 private:
     std::string mName;
     std::string mBirthday;
@@ -74,13 +75,20 @@ public:
     }
 };
 
-class StudentChoiceHandler { //Class of functions that handles the information of the student; involving choices
+//Class of functions that handles the information of the student; involving choices
+class StudentChoiceHandler {
 public:
+    /*
+     * @brief This function displays the gender choices.
+     */
     void displayGenderChoices() {
         std::cout << "> Gender:" << std::endl;
         std::cout << "  [1] MALE" << std::endl;
         std::cout << "  [2] FEMALE" << std::endl;
     }
+    /*
+     * @brief This function displays the degree program choices.
+     */
     void displayDegreeProgramChoices() {
         std::cout << "> Degree Program:" << std::endl;
         std::cout << "  [1] BSCS" << std::endl;
@@ -92,6 +100,9 @@ public:
         std::cout << "  [7] BSECE" << std::endl;
         std::cout << "  [8] BSME" << std::endl;
     }
+    /*
+     * @brief This function displays the year level choices.
+     */
     void displayYearLevelChoices() {
         std::cout << "> Year Level:" << std::endl;
         std::cout << "  [1] 1ST YEAR" << std::endl;
@@ -99,7 +110,10 @@ public:
         std::cout << "  [3] 3RD YEAR" << std::endl;
         std::cout << "  [4] 4TH YEAR" << std::endl;
     }
-
+    /*
+     * @brief This function gets the gender.
+     * @return The gender of the student in uppercase, or "INVALID" if the choice is invalid.
+     */
     std::string getGenderChoice() {
         int choice;
         std::cout << "  Please type your selection: ";
@@ -114,6 +128,10 @@ public:
             return "INVALID";
         }
     }
+    /*
+     * @brief This function gets the degree program.
+     * @return The degree program of the student in uppercase, or "INVALID" if the choice is invalid.
+     */
     std::string getDegreeProgramChoice() {
         int choice;
         std::cout << "  Please type your selection: ";
@@ -140,6 +158,10 @@ public:
             return "INVALID";
         }
     }
+    /**
+     *  @brief This function gets the year level.
+     *  @return The year level of the student in uppercase, or "INVALID" if the choice is invalid.
+     */
     std::string getYearLevelChoice() {
         int choice;
         std::cout << "  Please type your selection: ";
@@ -160,8 +182,13 @@ public:
     }
 };
 
-class StudentInfoHandler { //Class of functions that handles the information of the student; not involving choices
+//Class of functions that handles the information of the student; not involving choices
+class StudentInfoHandler {
 public:
+    /**
+     * @brief This function gets the name and converts it to uppercase.
+     * @return The name of the student in uppercase.
+     */
     std::string getName() {
         std::string name;
 
@@ -175,6 +202,10 @@ public:
 
         return name;
     }
+    /**
+     * @brief This function gets the birthday.
+     * @return The birthday of the student.
+     */
     std::string getBirthday() {
         std::string birthday;
         std::cout << "> Birthday (MM/DD/YYYY): ";
@@ -182,24 +213,31 @@ public:
 
         return birthday;
     }
+    /**
+     * @brief This function gets the address and converts it to uppercase.
+     * @return The address of the student in uppercase.
+     */
     std::string getAddress() {
         std::string address;
         std::cout << "> Address: ";
         std::getline(std::cin >> std::ws, address);
 
-        // Convert to Uppercase
         for (int i = 0; i < address.length(); i++) {
             address[i] = toupper(address[i]);
         }
 
         return address;
     }
+    /**
+     * @brief This function gets the student ID and checks if it is valid (9 digits).
+     * @return The student ID of the student, or -1 if invalid.
+     */
     int getStudentID() {
         int student_id;
         std::cout << "> Student ID (XXXXXXXXX): ";
         std::cin >> student_id;
 
-        if (student_id < 100000000 || student_id > 999999999) { //Checks if the student ID is valid; 9 digits
+        if (student_id < 100000000 || student_id > 999999999) {
             return -1;
         }
 
@@ -207,6 +245,7 @@ public:
     }
 };
 
+// Class of functions that handles the student information system
 class StudentRecordManager {
 private:
     Student* mStudent = nullptr;
@@ -225,7 +264,7 @@ public:
     Student* searchRecord(std::string name);
     Student* searchRecord(int student_ID);
     void displayAllRecords();
-    Student* displaySpecificRecord();
+    void displayRecord(Student* student);
     bool deleteRecord(int student_ID);
 
     void storeAllStudentInfoToFile();
@@ -234,6 +273,7 @@ public:
 
 };
 
+// Class of functions that handles the menus
 class Menu {
 public:
     /**
@@ -409,7 +449,41 @@ int main()
             break;
         }
         case (3): {
-            studentRecordManager.displaySpecificRecord();
+            system("CLS");
+            StudentInfoHandler studentInfoHandler;
+
+            Student student;
+
+            std::cout << "=============================" << std::endl;
+            std::cout << "| DISPLAY SPECIFIC RECORD   |" << std::endl;
+            std::cout << "=============================" << std::endl;
+            std::cout << "| [1] Search by Student ID  |" << std::endl;
+            std::cout << "| [2] Search by Name        |" << std::endl;
+            std::cout << "=============================" << std::endl;
+            int choice = menu.getChoice();
+            menu.displayLoading();
+            std::cout << std::endl;
+
+            switch (choice) {
+            case (1):
+                std::cout << "Enter the following details:" << std::endl;;
+                student.setStudentID(studentInfoHandler.getStudentID());
+                menu.displayLoading();
+                studentRecordManager.displayRecord(studentRecordManager.searchRecord(student.getStudentID()));
+                break;
+            case (2):
+                std::cout << "Enter the following details:" << std::endl;
+                student.setName(studentInfoHandler.getName());
+                menu.displayLoading();
+                studentRecordManager.displayRecord(studentRecordManager.searchRecord(student.getName()));
+                break;
+            default:
+                std::cout << "Invalid input. Try again!" << std::endl;
+                break;
+
+            }
+            menu.pause();
+            menu.displayLoading();
             break;
         }
         case (4): {
@@ -489,7 +563,7 @@ bool StudentRecordManager::addRecord(Student student) {
 /**
 * @brief This function is used to search for a student record by name.
 * @param name - Name of student to search for.
-* @return Student found if found, nullptr otherwise.
+* @return The pointer to the student if found, nullptr otherwise.
 */
 Student* StudentRecordManager::searchRecord(std::string name) {
     mCurr = mHead;
@@ -536,18 +610,30 @@ void StudentRecordManager::displayAllRecords() {
         std::cout << "No records found!" << std::endl;;
     }
 
-    for (int count = 1; mCurr != nullptr; count++) {
+    for (int count = 1; mCurr != nullptr; mCurr = mCurr->mNext, count++) {
         std::cout << "[" << count++ << "]   " << mCurr->mStudent->getStudentID() << " : " << mCurr->mStudent->getName() << std::endl;
     }
-
-    return;
 }
 
-Student* StudentRecordManager::displaySpecificRecord() {
-    int choice;
+void StudentRecordManager::displayRecord(Student* student) {
+    system("CLS");
+    std::cout << "==========================" << std::endl;
+    std::cout << "| DISPLAY STUDENT RECORD |" << std::endl;
+    std::cout << "==========================" << std::endl;
+    std::cout << std::endl;
 
+    if (student == nullptr) {
+        std::cout << "No records found!" << std::endl;
+        return;
+    }
 
-    return nullptr;
+    std::cout << "Student ID: " << student->getStudentID() << std::endl;
+    std::cout << "Name: " << student->getName() << std::endl;
+    std::cout << "Gender: " << student->getGender() << std::endl;
+    std::cout << "Birthday: " << student->getBirthday() << std::endl;
+    std::cout << "Address: " << student->getAddress() << std::endl;
+    std::cout << "Degree Program: " << student->getDegreeProgram() << std::endl;
+    std::cout << "Year Level: : " << student->getYearLevel() << std::endl;
 }
 
 /**
