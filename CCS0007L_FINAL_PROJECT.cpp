@@ -1,3 +1,4 @@
+#include <conio.h>
 #include <cstdlib>
 #include <cctype>
 #include <fstream>
@@ -76,29 +77,32 @@ public:
 class StudentChoiceHandler { //Class of functions that handles the information of the student; involving choices
 public:
     void displayGenderChoices() {
-    std::cout << "\t1. MALE" << std::endl;
-    std::cout << "\t2. FEMALE" << std::endl;
+    std::cout << "> Gender:" << std::endl;
+    std::cout << "  [1] MALE" << std::endl;
+    std::cout << "  [2] FEMALE" << std::endl;
     }
     void displayDegreeProgramChoices() {
-        std::cout << "\t1. BSCS" << std::endl;
-        std::cout << "\t2. BSIT" << std::endl;
-        std::cout << "\t3. BMMA" << std::endl;
-        std::cout << "\t4. BSCE" << std::endl;
-        std::cout << "\t5. BSCPE" << std::endl;
-        std::cout << "\t6. BSEE" << std::endl;
-        std::cout << "\t7. BSECE" << std::endl;
-        std::cout << "\t8. BSME" << std::endl;
+        std::cout << "> Degree Program:" << std::endl;
+        std::cout << "  [1] BSCS" << std::endl;
+        std::cout << "  [2] BSIT" << std::endl;
+        std::cout << "  [3] BMMA" << std::endl;
+        std::cout << "  [4] BSCE" << std::endl;
+        std::cout << "  [5] BSCPE" << std::endl;
+        std::cout << "  [6] BSEE" << std::endl;
+        std::cout << "  [7] BSECE" << std::endl;
+        std::cout << "  [8] BSME" << std::endl;
     }
     void displayYearLevelChoices() {
-        std::cout << "\t1. 1ST YEAR" << std::endl;
-        std::cout << "\t2. 2ND YEAR" << std::endl;
-        std::cout << "\t3. 3RD YEAR" << std::endl;
-        std::cout << "\t4. 4TH YEAR" << std::endl;
+        std::cout << "> Year Level:" << std::endl;
+        std::cout << "  [1] 1ST YEAR" << std::endl;
+        std::cout << "  [2] 2ND YEAR" << std::endl;
+        std::cout << "  [3] 3RD YEAR" << std::endl;
+        std::cout << "  [4] 4TH YEAR" << std::endl;
     }
 
     std::string getGenderChoice() {
         int choice;
-        std::cout << "\tPlease type your selection: ";
+        std::cout << "  Please type your selection: ";
         std::cin >> choice;
 
         switch (choice) {
@@ -112,7 +116,7 @@ public:
     }
     std::string getDegreeProgramChoice() {
         int choice;
-        std::cout << "\tPlease type your selection: ";
+        std::cout << "  Please type your selection: ";
         std::cin >> choice;
 
         switch (choice) {
@@ -138,7 +142,7 @@ public:
     }
     std::string getYearLevelChoice() {
         int choice;
-        std::cout << "\tPlease type your selection: ";
+        std::cout << "  Please type your selection: ";
         std::cin >> choice;
 
         switch (choice) {
@@ -161,7 +165,7 @@ public:
     std::string getName() {
         std::string name;
 
-        std::cout << "Name: ";
+        std::cout << "> Name: ";
         std::getline(std::cin >> std::ws, name);
 
         // Convert to Uppercase
@@ -173,14 +177,14 @@ public:
     }
     std::string getBirthday() {
         std::string birthday;
-        std::cout << "Birthday (MM/DD/YYYY): ";
+        std::cout << "> Birthday (MM/DD/YYYY): ";
         std::getline(std::cin >> std::ws, birthday);
 
         return birthday;
     }
     std::string getAddress() {
         std::string address;
-        std::cout << "Address: ";
+        std::cout << "> Address: ";
         std::getline(std::cin >> std::ws, address);
 
         // Convert to Uppercase
@@ -192,7 +196,7 @@ public:
     }
     int getStudentID() {
         int student_id;
-        std::cout << "Student ID (XXXXXXXXX): ";
+        std::cout << "> Student ID (XXXXXXXXX): ";
         std::cin >> student_id;
 
         if (student_id < 100000000 || student_id > 999999999) { //Checks if the student ID is valid; 9 digits
@@ -227,20 +231,39 @@ public:
 class Menu {
 public:
     void displayMenu() {
-        std::cout << "Welcome to Group Jollibee's Student Information System" << std::endl;
-        
-        std::cout << "\nWhat do you want to do?" << std::endl;
-        std::cout << "1. Add New Record" << std::endl;
-        std::cout << "2. Search Record" << std::endl;
-        std::cout << "3. Display All Records" << std::endl;
-        std::cout << "4. Display Specific Record" << std::endl;
-        std::cout << "5. Delete Record" << std::endl;
-        std::cout << "6. Exit" << std::endl;
+        // Display Menu
+        // Sample
+        // ==========================================================
+        // | WELCOME TO GROUP JOLLIBEE'S STUDENT INFORMATION SYSTEM |
+        // ==========================================================
+        // | What do you want to do?                                |   
+        // |                                                        |
+        // | [1] Add New Record                                     |
+        // | [2] Search Record                                      |
+        // | [3] Display All Records                                |
+        // | [4] Display Specific Record                            |
+        // | [5] Delete Record                                      |
+        // | [6] Exit                                               |
+        // ----------------------------------------------------------
+
+        std::cout << "==========================================================" << std::endl;
+        std::cout << "| WELCOME TO GROUP JOLLIBEE'S STUDENT INFORMATION SYSTEM |" << std::endl;
+        std::cout << "==========================================================" << std::endl;
+        std::cout << "| What do you want to do?                                |" << std::endl;
+        std::cout << "|                                                        |" << std::endl;
+        std::cout << "| [1] Add New Record                                     |" << std::endl;
+        std::cout << "| [2] Search Record                                      |" << std::endl;
+        std::cout << "| [3] Display All Records                                |" << std::endl;
+        std::cout << "| [4] Display Specific Record                            |" << std::endl;
+        std::cout << "| [5] Delete Record                                      |" << std::endl;
+        std::cout << "| [6] Exit                                               |" << std::endl;
+        std::cout << "----------------------------------------------------------" << std::endl;
     }
 
     int getChoice() {
 		int choice;
-		std::cout << "\nPlease type your selection: ";
+        std::cout << std::endl;
+		std::cout << "Please type your selection: ";
         std::cin >> choice;
         return choice;
 	}
@@ -265,6 +288,12 @@ public:
             }
         }
     }
+
+    void pause() {
+        std::cout << std::endl;
+        std::cout << "Press any key to continue..." << std::endl;
+        _getch();
+    }
 };
 
 int main()
@@ -288,18 +317,21 @@ int main()
             StudentChoiceHandler studentChoiceHandler;
 
             Student student;
-            std::cout << "ADD NEW RECORD" << std::endl;
 
-            std::cout << "\nEnter the following information: " << std::endl;
+            std::cout << "==================" << std::endl;
+            std::cout << "| ADD NEW RECORD |" << std::endl;
+            std::cout << "==================" << std::endl;
+            std::cout << std::endl;
+            std::cout << "Enter the following information: " << std::endl;
             student.setName(studentInfoHandler.getName());
             student.setBirthday(studentInfoHandler.getBirthday());
             student.setAddress(studentInfoHandler.getAddress());
-            std::cout << "Gender:" << std::endl;
             studentChoiceHandler.displayGenderChoices();
             student.setGender(studentChoiceHandler.getGenderChoice());
             if (student.getGender() == "INVALID") { //If the gender is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
 
+                menu.pause();
                 menu.displayLoading();
                 break;
             }
@@ -307,35 +339,39 @@ int main()
             if (student.getStudentID() == -1) { //If the student ID is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
 
+                menu.pause();
                 menu.displayLoading();
                 break;
             }
-            std::cout << "Degree Program:" << std::endl;
             studentChoiceHandler.displayDegreeProgramChoices();
             student.setDegreeProgram(studentChoiceHandler.getDegreeProgramChoice());
             if (student.getDegreeProgram() == "INVALID") { //If the degree program is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
 
+                menu.pause();
                 menu.displayLoading();
                 break;
             }
-            std::cout << "Year Level:" << std::endl;
             studentChoiceHandler.displayYearLevelChoices();
             student.setYearLevel(studentChoiceHandler.getYearLevelChoice());
             if (student.getYearLevel() == "INVALID") { //If the year level is invalid, it will not add the record
                 std::cout << "Invalid input. Try again!" << std::endl;
 
+                menu.pause();
                 menu.displayLoading();
                 break;
             }
 
             if (studentRecordManager.addRecord(student)) {
+                menu.displayLoading();
                 std::cout << "\n\nRecord added successfully!" << std::endl;
             }
             else {
+                menu.displayLoading();
                 std::cout << "\n\nRecord already exists!" << std::endl;
             }
 
+            menu.pause();
             menu.displayLoading();
             break;
         }
@@ -344,7 +380,20 @@ int main()
             break;
         }
         case (3): {
+            system("CLS");
+            StudentInfoHandler studentInfoHandler;
+
+            Student student;
+
+            std::cout << "=======================" << std::endl;
+            std::cout << "| ALL STUDENT RECORDS |\n" << std::endl;
+            std::cout << "=======================" << std::endl;
+            std::cout << std::endl;
+
 			studentRecordManager.displayAllRecords();
+
+			menu.pause();
+			menu.displayLoading();
 			break;
         }
         case (4): {
@@ -357,14 +406,24 @@ int main()
 
             Student student;
 
-            std::cout << "DELETE STUDENT RECORD" << std::endl;
+            std::cout << "=========================" << std::endl;
+            std::cout << "| DELETE STUDENT RECORD |" << std::endl;
+            std::cout << "=========================" << std::endl;
+            std::cout << std::endl;
+            std::cout << "Enter the following information: " << std::endl;
             student.setStudentID(studentInfoHandler.getStudentID());
             if (studentRecordManager.deleteRecord(student.getStudentID())) {
+                menu.displayLoading();
                 std::cout << "\n\nRecord deleted successfully!" << std::endl;
+
+                menu.pause();
                 menu.displayLoading();
             }
             else {
+                menu.displayLoading();
                 std::cout << "\n\nRecord not found or invalid student ID!" << std::endl;
+
+                menu.pause();
                 menu.displayLoading();
             }
             break;
@@ -476,10 +535,6 @@ Student* StudentRecordManager::searchRecord() { // The same with displaySpecific
 }
 
 void StudentRecordManager::displayAllRecords() {
-    system("CLS");
-
-    std::cout << "DISPLAY STUDENT RECORD\n" << std::endl;
-
     mCurr = mHead;
     if (mCurr == nullptr) {
         std::cout << "No records found!" << std::endl;;
@@ -488,7 +543,7 @@ void StudentRecordManager::displayAllRecords() {
     int count = 1;
     while (mCurr != nullptr) {
         // Display record in "student number : name" format
-        std::cout << count++ << "\t" << mCurr->mStudent->getStudentID() << " : " << mCurr->mStudent->getName() << std::endl;
+        std::cout << "[" << count++ << "]   " << mCurr->mStudent->getStudentID() << " : " << mCurr->mStudent->getName() << std::endl;
         mCurr = mCurr->mNext;
     }
     return;
@@ -503,7 +558,6 @@ Student* StudentRecordManager::displaySpecificRecord() { // The same with search
 
     do {
         system("CLS");
-
         std::cout << "SEARCH STUDENT RECORD" << std::endl;
         std::cout << "\nHow do you want to search?" << std::endl;
         std::cout << "1. Search by name" << std::endl;
