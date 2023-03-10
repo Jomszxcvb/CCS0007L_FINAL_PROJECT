@@ -211,8 +211,8 @@ class StudentRecordManager {
 private:
     Student* mStudent = nullptr;
 
-    std::string mFileName;
-    int mStudentSize;
+    std::string mTxtFile = "student_record.txt";
+    int mStudentSize; // Useless variable; no significant use
 
     StudentRecordManager* mHead = nullptr;
     StudentRecordManager* mTail = nullptr;
@@ -226,6 +226,71 @@ public:
     void displayAllRecords();
     Student* displaySpecificRecord();
     bool deleteRecord(int temp_student_ID);
+
+    // Function to store All student information in the text file
+    bool storeAllStudentInfoInFile() {
+        std::ofstream file(mTxtFile, std::ios::app);
+
+        curr = head;
+        while (curr != tail) {
+            file << curr->student.getName() << std::endl;
+            file << curr->student.getStudentID() << std::endl;
+            file << curr->student.getGender() << std::endl;
+            file << curr->student.getBirthday() << std::endl;
+            file << curr->student.getAddress() << std::endl;
+            file << curr->student.getDegreeProgram() << std::endl;
+            file << curr->student.getYearLevel() << std::endl;
+
+            curr = curr->next;
+        }
+
+        file.close();
+    }
+
+    // Function to read student information from the text file
+    bool readAllStudentInfoFromFile() {
+        std::ifstream file(mTxtFile);
+
+        if (file.is_open()) {
+            std::string line;
+            int counter = 0;
+
+            while (std::getline(file, line)) {
+                if (counter == 0) {
+                    mStudent = new Student;
+                    mStudent->setName(line);
+                }
+                else if (counter == 1) {
+                    mStudent->setStudentID(std::stoi(line));
+                }
+                else if (counter == 2) {
+                    mStudent->setGender(line);
+                }
+                else if (counter == 3) {
+                    mStudent->setBirthday(line);
+                }
+                else if (counter == 4) {
+                    mStudent->setAddress(line);
+                }
+                else if (counter == 5) {
+                    mStudent->setDegreeProgram(line);
+                }
+                else if (counter == 6) {
+                    mStudent->setYearLevel(line);
+                    addRecord(*mStudent);
+                    counter = -1;
+                }
+                counter++;
+            }
+        }
+        else {
+            return false;
+        }
+
+        file.close();
+        return true;
+    }  
+
 };
 
 class Menu {
