@@ -1,4 +1,3 @@
-#include <sstream>
 #include <conio.h>
 #include <cstdlib>
 #include <cctype>
@@ -205,14 +204,13 @@ public:
     }
     /**
      * @brief This function gets the birthday.
-     * @return The birthday of the student in MM/DD/YYYY format, or "INVALID" if the date is invalid.
+     * @return The birthday of the student.
      */
     std::string getBirthday() {
         std::string birthday;
         std::cout << "> Birthday (MM/DD/YYYY): ";
         std::getline(std::cin >> std::ws, birthday);
 
-        // checks if the date is valid is mm/dd/yyyy format and check if the date itself is valid and check for special cases such as leap year; if not return "INVALID"
         if (birthday.length() != 10) {
             return "INVALID";
         }
@@ -287,9 +285,9 @@ public:
 class StudentRecordManager {
 private:
     Student* mStudent = nullptr;
+    int mStudentSize = 0;
 
     std::string mTxtFile = "student_record.txt";
-    int mStudentSize; // Useless variable; no significant use
 
     StudentRecordManager* mHead = nullptr;
     StudentRecordManager* mTail = nullptr;
@@ -397,7 +395,7 @@ int main()
     Menu menu;
     int choice;
     do {
-        system("CLS"); system("color 04");
+        system("CLS"); system("color 0B");
 
         menu.displayMenu(); //Display menu
         choice = menu.getChoice(); //Get user's choice
@@ -406,7 +404,7 @@ int main()
 
         switch (choice) {
         case (1): {
-            system("CLS"); system("color 02");
+            system("CLS"); system("color 0C");
             StudentInfoHandler studentInfoHandler;
             StudentChoiceHandler studentChoiceHandler;
 
@@ -420,11 +418,10 @@ int main()
             student.setName(studentInfoHandler.getName());
             student.setBirthday(studentInfoHandler.getBirthday());
             if (student.getBirthday() == "INVALID") { //If the birthday is invalid, it will not add the record
-                std::cout << "Invalid input. Try again!" << std::endl;
-
-                menu.pause();
-                menu.displayLoading();
-                break;
+            	std::cout << "Invalid input. Try again!" << std::endl;
+            	menu.pause();
+            	menu.displayLoading();
+            	break;
             }
             student.setAddress(studentInfoHandler.getAddress());
             studentChoiceHandler.displayGenderChoices();
@@ -477,7 +474,7 @@ int main()
             break;
         }
         case (2): {
-            system("CLS"); system("color 06");
+            system("CLS"); system("color 0D");
             StudentInfoHandler studentInfoHandler;
 
             Student student;
@@ -494,7 +491,7 @@ int main()
             break;
         }
         case (3): {
-            system("CLS"); system("color 03");
+            system("CLS"); system("color 0E");
             StudentInfoHandler studentInfoHandler;
 
             Student student;
@@ -511,12 +508,14 @@ int main()
 
             switch (choice) {
             case (1):
+                std::cout << std::endl;
                 std::cout << "Enter the following details:" << std::endl;;
                 student.setStudentID(studentInfoHandler.getStudentID());
                 menu.displayLoading();
                 studentRecordManager.displayRecord(studentRecordManager.searchRecord(student.getStudentID()));
                 break;
             case (2):
+                std::cout << std::endl;
                 std::cout << "Enter the following details:" << std::endl;
                 student.setName(studentInfoHandler.getName());
                 menu.displayLoading();
@@ -532,7 +531,7 @@ int main()
             break;
         }
         case (4): {
-            system("CLS"); system("color 03");
+            system("CLS"); system("color 0F");
             StudentInfoHandler studentInfoHandler;
 
             Student student;
@@ -560,7 +559,7 @@ int main()
             break;
         }
         case (5): {
-            system("CLS"); system("color 07");
+            system("CLS"); system("color 0A");
             studentRecordManager.storeAllStudentInfoToFile();
             studentRecordManager.unloadAllStudent();
             menu.displayExit();
@@ -612,7 +611,7 @@ bool StudentRecordManager::addRecord(Student student) {
 */
 Student* StudentRecordManager::searchRecord(std::string name) {
     mCurr = mHead;
-    while (mCurr != mTail) {
+    while (mCurr != nullptr) {
 
         if (mCurr->mStudent->getName() == name) {
             return mCurr->mStudent;
@@ -630,7 +629,7 @@ Student* StudentRecordManager::searchRecord(std::string name) {
 */
 Student* StudentRecordManager::searchRecord(int student_ID) {
     mCurr = mHead;
-    while (mCurr != mTail) {
+    while (mCurr != nullptr) {
 
         if (mCurr->mStudent->getStudentID() == student_ID) {
             return mCurr->mStudent;
@@ -655,69 +654,34 @@ void StudentRecordManager::displayAllRecords() {
         std::cout << "No records found!" << std::endl;;
     }
 
-    for (int count = 1; mCurr != nullptr; mCurr = mCurr->mNext, count++) {
+    int count = 1;
+    while (mCurr != nullptr) {
         std::cout << "[" << count++ << "]   " << mCurr->mStudent->getStudentID() << " : " << mCurr->mStudent->getName() << std::endl;
+
+        mCurr = mCurr->mNext;
+        count++;
     }
 }
 
 void StudentRecordManager::displayRecord(Student* student) {
-    system("CLS"); system("color 08");
+    system("CLS"); system("color 09");
     std::cout << "==========================" << std::endl;
     std::cout << "| DISPLAY STUDENT RECORD |" << std::endl;
     std::cout << "==========================" << std::endl;
     std::cout << std::endl;
-
-    do {
-        system("CLS");
-        std::cout << "SEARCH STUDENT RECORD" << std::endl;
-        std::cout << "\nHow do you want to search?" << std::endl;
-        std::cout << "1. Search by name" << std::endl;
-    std::cout << "Student ID: " << student->getStudentID() << std::endl;
-    std::cout << "Name: " <<  student->getName() << std::endl;
-    std::cout << "Gender: " <<  student->getGender() << std::endl;
-    std::cout << "Birthday: " <<  student->getBirthday() << std::endl;
-    std::cout << "Address: " <<  student->getAddress() << std::endl;
-    std::cout << "Degree Program: " <<  student->getDegreeProgram() << std::endl;
-    std::cout << "Year Level: : " <<  student->getYearLevel() << std::endl;
-        std::cout << "3. Go Back" << std::endl;
-        std::cout << "\nPlease type your selection: ";
-
-        std::cin >> choice;
-
-        switch (choice) {
-        case 1: {// Search by name
-            std::string temp_name;
-            std::cout << "\nEnter Student's name: ";
-            std::cin >> temp_name;
-
-            mCurr = mHead;
-            while (mCurr != nullptr) {
-                if (mCurr->mStudent->getName() == temp_name) {
-                    std::cout << "\nStudent Name: " << mCurr->mStudent->getName() << std::endl;
-                    std::cout << "> Birthday: " << mCurr->mStudent->getBirthday() << std::endl;
-                    std::cout << "> Address: " << mCurr->mStudent->getAddress() << std::endl;
-                    std::cout << "> Gender: " << mCurr->mStudent->getGender() << std::endl;
-                    std::cout << "> Student ID: " << mCurr->mStudent->getStudentID() << std::endl;
-                    std::cout << "> Degree Program: " << mCurr->mStudent->getDegreeProgram() << std::endl;
-                    std::cout << "> Year Level: " << mCurr->mStudent->getYearLevel() << std::endl;
-                    return mCurr->mStudent;
-                }
-                mCurr = mCurr->mNext;
-            }
-            std::cout << "\nStudent not found!" << std::endl;
-            break;
-        }
-        case 2: { // Search by student ID
-            int temp_student_ID;
-            std::cout << "\nEnter the Student ID: ";
-            std::cin >> temp_student_ID;
 
     if (student == nullptr) {
         std::cout << "No records found!" << std::endl;
         return;
     }
 
-    return nullptr;
+    std::cout << "Student ID: " << student->getStudentID() << std::endl;
+    std::cout << "Name: " << student->getName() << std::endl;
+    std::cout << "Gender: " << student->getGender() << std::endl;
+    std::cout << "Birthday: " << student->getBirthday() << std::endl;
+    std::cout << "Address: " << student->getAddress() << std::endl;
+    std::cout << "Degree Program: " << student->getDegreeProgram() << std::endl;
+    std::cout << "Year Level: : " << student->getYearLevel() << std::endl;
 }
 
 /**
@@ -841,8 +805,10 @@ void StudentRecordManager::storeAllStudentInfoToFile() {
  * @brief This function is used to unload all student records.
  */
 void StudentRecordManager::unloadAllStudent() {
-    for (mCurr = mHead; mCurr != nullptr; mCurr = mCurr->mNext) {
-        delete mCurr->mStudent;
-        delete mCurr;
+    while (mHead != nullptr) {
+        mCurr = mHead;
+		mHead = mHead->mNext;
+		delete mCurr->mStudent;
+		delete mCurr;
     }
 }
