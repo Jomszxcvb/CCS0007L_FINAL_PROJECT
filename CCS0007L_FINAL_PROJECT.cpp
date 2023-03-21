@@ -1,3 +1,4 @@
+#include <sstream>
 #include <conio.h>
 #include <cstdlib>
 #include <cctype>
@@ -204,12 +205,49 @@ public:
     }
     /**
      * @brief This function gets the birthday.
-     * @return The birthday of the student.
+     * @return The birthday of the student in MM/DD/YYYY format, or "INVALID" if the date is invalid.
      */
     std::string getBirthday() {
         std::string birthday;
         std::cout << "> Birthday (MM/DD/YYYY): ";
         std::getline(std::cin >> std::ws, birthday);
+
+        // checks if the date is valid is mm/dd/yyyy format and check if the date itself is valid and check for special cases such as leap year; if not return "INVALID"
+        if (birthday.length() != 10) {
+            return "INVALID";
+        }
+        else if (birthday[2] != '/' || birthday[5] != '/') {
+            return "INVALID";
+        }
+        else {
+            int month = std::stoi(birthday.substr(0, 2));
+            int day = std::stoi(birthday.substr(3, 2));
+            int year = std::stoi(birthday.substr(6, 4));
+
+            if (month < 1 || month > 12) {
+                return "INVALID";
+            }
+            else if (day < 1 || day > 31) {
+                return "INVALID";
+            }
+            else if (month == 2) {
+                if (year % 4 == 0) {
+                    if (day > 29) {
+                        return "INVALID";
+                    }
+                }
+                else {
+                    if (day > 28) {
+                        return "INVALID";
+                    }
+                }
+            }
+            else if (month == 4 || month == 6 || month == 9 || month == 11) {
+                if (day > 30) {
+                    return "INVALID";
+                }
+            }
+        }
 
         return birthday;
     }
@@ -359,7 +397,7 @@ int main()
     Menu menu;
     int choice;
     do {
-        system("CLS");
+        system("CLS"); system("color 04");
 
         menu.displayMenu(); //Display menu
         choice = menu.getChoice(); //Get user's choice
@@ -368,7 +406,7 @@ int main()
 
         switch (choice) {
         case (1): {
-            system("CLS");
+            system("CLS"); system("color 02");
             StudentInfoHandler studentInfoHandler;
             StudentChoiceHandler studentChoiceHandler;
 
@@ -381,6 +419,13 @@ int main()
             std::cout << "Enter the following information: " << std::endl;
             student.setName(studentInfoHandler.getName());
             student.setBirthday(studentInfoHandler.getBirthday());
+            if (student.getBirthday() == "INVALID") { //If the birthday is invalid, it will not add the record
+                std::cout << "Invalid input. Try again!" << std::endl;
+
+                menu.pause();
+                menu.displayLoading();
+                break;
+            }
             student.setAddress(studentInfoHandler.getAddress());
             studentChoiceHandler.displayGenderChoices();
             student.setGender(studentChoiceHandler.getGenderChoice());
@@ -432,7 +477,7 @@ int main()
             break;
         }
         case (2): {
-            system("CLS");
+            system("CLS"); system("color 06");
             StudentInfoHandler studentInfoHandler;
 
             Student student;
@@ -449,7 +494,7 @@ int main()
             break;
         }
         case (3): {
-            system("CLS");
+            system("CLS"); system("color 03");
             StudentInfoHandler studentInfoHandler;
 
             Student student;
@@ -487,7 +532,7 @@ int main()
             break;
         }
         case (4): {
-            system("CLS");
+            system("CLS"); system("color 03");
             StudentInfoHandler studentInfoHandler;
 
             Student student;
@@ -515,7 +560,7 @@ int main()
             break;
         }
         case (5): {
-            system("CLS");
+            system("CLS"); system("color 07");
             studentRecordManager.storeAllStudentInfoToFile();
             studentRecordManager.unloadAllStudent();
             menu.displayExit();
@@ -616,24 +661,63 @@ void StudentRecordManager::displayAllRecords() {
 }
 
 void StudentRecordManager::displayRecord(Student* student) {
-    system("CLS");
+    system("CLS"); system("color 08");
     std::cout << "==========================" << std::endl;
     std::cout << "| DISPLAY STUDENT RECORD |" << std::endl;
     std::cout << "==========================" << std::endl;
     std::cout << std::endl;
+
+    do {
+        system("CLS");
+        std::cout << "SEARCH STUDENT RECORD" << std::endl;
+        std::cout << "\nHow do you want to search?" << std::endl;
+        std::cout << "1. Search by name" << std::endl;
+    std::cout << "Student ID: " << student->getStudentID() << std::endl;
+    std::cout << "Name: " <<  student->getName() << std::endl;
+    std::cout << "Gender: " <<  student->getGender() << std::endl;
+    std::cout << "Birthday: " <<  student->getBirthday() << std::endl;
+    std::cout << "Address: " <<  student->getAddress() << std::endl;
+    std::cout << "Degree Program: " <<  student->getDegreeProgram() << std::endl;
+    std::cout << "Year Level: : " <<  student->getYearLevel() << std::endl;
+        std::cout << "3. Go Back" << std::endl;
+        std::cout << "\nPlease type your selection: ";
+
+        std::cin >> choice;
+
+        switch (choice) {
+        case 1: {// Search by name
+            std::string temp_name;
+            std::cout << "\nEnter Student's name: ";
+            std::cin >> temp_name;
+
+            mCurr = mHead;
+            while (mCurr != nullptr) {
+                if (mCurr->mStudent->getName() == temp_name) {
+                    std::cout << "\nStudent Name: " << mCurr->mStudent->getName() << std::endl;
+                    std::cout << "> Birthday: " << mCurr->mStudent->getBirthday() << std::endl;
+                    std::cout << "> Address: " << mCurr->mStudent->getAddress() << std::endl;
+                    std::cout << "> Gender: " << mCurr->mStudent->getGender() << std::endl;
+                    std::cout << "> Student ID: " << mCurr->mStudent->getStudentID() << std::endl;
+                    std::cout << "> Degree Program: " << mCurr->mStudent->getDegreeProgram() << std::endl;
+                    std::cout << "> Year Level: " << mCurr->mStudent->getYearLevel() << std::endl;
+                    return mCurr->mStudent;
+                }
+                mCurr = mCurr->mNext;
+            }
+            std::cout << "\nStudent not found!" << std::endl;
+            break;
+        }
+        case 2: { // Search by student ID
+            int temp_student_ID;
+            std::cout << "\nEnter the Student ID: ";
+            std::cin >> temp_student_ID;
 
     if (student == nullptr) {
         std::cout << "No records found!" << std::endl;
         return;
     }
 
-    std::cout << "Student ID: " << student->getStudentID() << std::endl;
-    std::cout << "Name: " << student->getName() << std::endl;
-    std::cout << "Gender: " << student->getGender() << std::endl;
-    std::cout << "Birthday: " << student->getBirthday() << std::endl;
-    std::cout << "Address: " << student->getAddress() << std::endl;
-    std::cout << "Degree Program: " << student->getDegreeProgram() << std::endl;
-    std::cout << "Year Level: : " << student->getYearLevel() << std::endl;
+    return nullptr;
 }
 
 /**
