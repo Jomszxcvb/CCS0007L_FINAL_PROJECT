@@ -368,7 +368,7 @@ public:
      */
     void displayLoading() {
         int numberOfDots = 3;
-        double timeInterval;
+        int timeInterval;
         std::cout << std::endl << "Loading ";
         for (numberOfDots; numberOfDots >= 0; numberOfDots--) {
             {
