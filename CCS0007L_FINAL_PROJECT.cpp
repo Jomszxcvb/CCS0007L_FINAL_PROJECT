@@ -316,7 +316,7 @@ public:
      * @brief This function displays the main menu of the program.
      * Sample:
      *  ==========================================================
-     *  | WELCOME TO GROUP JOLLIBEE'S STUDENT INFORMATION SYSTEM |
+     *  |               INFOSPHERE STUDENT SYSTEM                |
      *  ==========================================================
      *  | What do you want to do?                                |
      *  |                                                        |
@@ -329,7 +329,7 @@ public:
      */
     void displayMenu() {
         std::cout << "==========================================================" << std::endl;
-        std::cout << "| WELCOME TO GROUP JOLLIBEE'S STUDENT INFORMATION SYSTEM |" << std::endl;
+        std::cout << "|               INFOSPHERE STUDENT SYSTEM                |" << std::endl;
         std::cout << "==========================================================" << std::endl;
         std::cout << "| What do you want to do?                                |" << std::endl;
         std::cout << "|                                                        |" << std::endl;
@@ -355,8 +355,9 @@ public:
      * @brief This function displays the exit message of the program and the creators of the program
      */
     void displayExit() {
-        std::cout << "\nThank you for using our system!" << std::endl;
-        std::cout << "\nGroup Members:" << std::endl;
+        std::cout << "\nThank you for using Infosphere!" << std::endl;
+        std::cout << "\nThe Krim Fly Crew" << std::endl;
+        std::cout << "Group Members:" << std::endl;
         std::cout << "1. Jommel Rowin S. Sabater" << std::endl;
         std::cout << "2. Cloud Marshall Bruce Marcellana" << std::endl;
         std::cout << "3. Nadine C. Younes" << std::endl;
